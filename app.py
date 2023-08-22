@@ -42,8 +42,6 @@ class Rust_measure(Resource):
             loaded_model.set_weights(model_weights)
             pred_value = loaded_model.predict(img)
             prediction = pred_value[0][0]
-            print(pred_value)
-            print(prediction)
             if prediction > 0.5:
                 result = 'No Corrosion'
             else:
