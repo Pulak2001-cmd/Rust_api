@@ -48,7 +48,7 @@ class Rust_measure(Resource):
                 result = 'No Corrosion'
             else:
                 result = 'Corrosion'
-            return {'result': result, 'prediction': prediction}, 200
+            return {'result': result, 'prediction': float(prediction)}, 200
 
 api.add_resource(Rust_measure, '/v1/api/Rust')
 
