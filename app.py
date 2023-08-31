@@ -36,17 +36,21 @@ class Rust_measure(Resource):
         img = img/255.
         img = np.expand_dims(img, axis=0)
         
-        with open('model/model.pkl', 'rb') as f:
-            model_architecture, model_weights = pickle.load(f)
-            loaded_model = tf.keras.models.model_from_json(model_architecture)
-            loaded_model.set_weights(model_weights)
-            pred_value = loaded_model.predict(img)
-            prediction = pred_value[0][0]
-            if prediction > 0.5:
-                result = 'No Corrosion'
-            else:
-                result = 'Corrosion'
-            return {'result': result, 'prediction': float(prediction)}, 200
+        # with open('model/model.pkl', 'rb') as f:
+        #     model_architecture, model_weights = pickle.load(f)
+        #     loaded_model = tf.keras.models.model_from_json(model_architecture)
+        #     loaded_model.set_weights(model_weights)
+        #     pred_value = loaded_model.predict(img)
+        #     prediction = pred_value[0][0]
+        #     if prediction > 0.5:
+        #         result = 'No Corrosion'
+        #     else:
+        #         result = 'Corrosion'
+        #     return {'result': result, 'prediction': float(prediction)}, 200
+        model = tf.keras.models.load_model('CNN.h5', custom_objects={'KerasLayer': hub.KerasLayer})
+        pred_value = model.predict(img)
+        prediction = pred_value[0][0]
+        return {'prediction':prediction}
 
 api.add_resource(Rust_measure, '/v1/api/Rust')
 
