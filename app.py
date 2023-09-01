@@ -48,7 +48,7 @@ class Rust_measure(Resource):
         #     else:
         #         result = 'Corrosion'
         #     return {'result': result, 'prediction': float(prediction)}, 200
-        model = tf.keras.models.load_model('CNN.h5', custom_objects={'KerasLayer': hub.KerasLayer})
+        model = tf.keras.models.load_model('model/CNN.h5', custom_objects={'KerasLayer': hub.KerasLayer})
         pred_value = model.predict(img)
         prediction = pred_value[0][0]
         return {'prediction':prediction}
