@@ -26,13 +26,14 @@ class Rust_measure(Resource):
             return {'message': 'No file part in the request'}, 400
         
         file = request.files['file']
+        # print(file)
         if file.filename == '':
             return {'message': 'No file selected'}, 404
         
         file.save('images/'+file.filename)
         img_path = 'images/'+file.filename
 
-        img = tf.keras.preprocessing.image.load_img(img_path, target_size=(128, 128, 3))
+        img = tf.keras.preprocessing.image.load_img(img_path, target_size=(224, 224, 3))
         img = tf.keras.preprocessing.image.img_to_array(img)
         img = img/255.
         img = np.expand_dims(img, axis=0)
@@ -50,8 +51,9 @@ class Rust_measure(Resource):
         #     return {'result': result, 'prediction': float(prediction)}, 200
         model = tf.keras.models.load_model('model/CNN.h5', custom_objects={'KerasLayer': hub.KerasLayer})
         pred_value = model.predict(img)
-        prediction = pred_value[0][0]
-        return {'prediction':prediction}
+        prediction = int(pred_value[0][0])
+        
+        return {'prediction': prediction}
 
 api.add_resource(Rust_measure, '/v1/api/Rust')
 
