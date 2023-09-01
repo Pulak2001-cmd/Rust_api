@@ -4,6 +4,7 @@ import numpy as np
 import os, pickle
 from flask_cors import CORS
 import tensorflow as tf
+import tensorflow_hub as hub
 
 app = Flask(__name__, static_folder='images')
 app.secret_key='asdfrfrhbrirmanseje#48h'
