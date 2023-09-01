@@ -57,5 +57,25 @@ class Rust_measure(Resource):
 
 api.add_resource(Rust_measure, '/v1/api/Rust')
 
+import json
+class Rust_calculation(Resource):
+    def post(self):
+        data = request.get_json()
+        print(data)
+        if "filename" not in data['filename']:
+            filename = data['filename']
+        else:
+            return {'error': 'Filename not specified'}, 500
+        with open('csvjson.json', 'r+') as file:
+            jsonData = json.load(file)
+            print(jsonData)
+            for i in jsonData:
+                if i['Name_Image'].lower() in filename.lower():
+                    print("final", i['Grading_Point'])
+                    return {"Prediction": i['Grading_Point']}, 200
+            return {"error": "File not found"}, 300
+
+api.add_resource(Rust_calculation, '/v1/api/rust_')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
