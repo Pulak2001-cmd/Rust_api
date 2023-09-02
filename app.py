@@ -76,5 +76,26 @@ class Rust_calculation(Resource):
 
 api.add_resource(Rust_calculation, '/v1/api/rust_')
 
+class Rust_Batch(Resource):
+    def post(self):
+        data =  request.get_json()
+        if "filenames" not in data:
+            return {'error': 'Missing filenames'}, 302
+        else:
+            filenames = data["filenames"]
+        filenames = filenames.split(",")
+        filenames = [i.lower() for i in filenames]
+        result = {}
+        with open('csvjson.json', 'r+') as file:
+            jsonData = json.load(file)
+            for i in jsonData:
+                for j in filenames:
+                    if i['Name_Image'].lower() in j:
+                        result[j] = int(i['Grading_Point'])
+                        break
+        return {'prediction': result}, 200
+
+api.add_resource(Rust_Batch, '/v1/api/batch')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
