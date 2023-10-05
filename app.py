@@ -66,7 +66,7 @@ class Rust_calculation(Resource):
             filename = data['filename']
         else:
             return {'error': 'Filename not specified'}, 500
-        with open('csvjson.json', 'r+') as file:
+        with open('result.json', 'r+') as file:
             jsonData = json.load(file)
             for i in jsonData:
                 if i['Name_Image'].lower() in filename.lower():
@@ -86,7 +86,7 @@ class Rust_Batch(Resource):
         filenames = filenames.split(",")
         filenames = [i.lower() for i in filenames]
         result = {}
-        with open('csvjson.json', 'r+') as file:
+        with open('result.json', 'r+') as file:
             jsonData = json.load(file)
             for i in jsonData:
                 for j in filenames:
